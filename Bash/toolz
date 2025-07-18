@@ -1,0 +1,127 @@
+echo "Welcome to your tools helper"
+echo ""
+choice=0
+
+while [ "$choice" != 6 ];
+do
+if [ "$choice" == 0 ];
+then
+ echo "choose the option you need help with"
+ echo " "
+ echo "1. The Find command "
+ echo "2. System Information "
+ echo "3. Proccess managment "
+ echo "4. User managment "
+ echo "5. Help system "
+ echo "6. Exit"
+read -p "Choose your number: " choice
+fi
+
+if [ "$choice" == 1 ];
+then
+ request="Find helper"
+ action="-f"
+elif [ "$choice" == 2 ];
+then
+ request="System information"
+ action="-s"
+elif [ "$choice" == 3 ];
+then
+ request="Process managment"
+ action="-p"
+elif [ "$choice" == 4 ];
+then
+ request="User managment"
+ action="-u"
+elif [ "$choice" == 5 ];
+then
+ request="help system"
+ action="-h"
+elif [ "$choice" == 6 ];
+then
+ echo "exiting..."
+ sleep 2s
+ exit 0
+else
+ echo "irrelevant input!"
+ choice=0
+fi
+ echo "you chose the" $request
+ read -p "type 'Y' to confirm: " answer
+if [[ "$answer" == "Y" || "$answer" == "y" ]];
+then
+  if [ "$action" == "-f" ];
+  then
+   echo "Please fill the relevant details: must fill at least 1, not counting directory"
+   read -p "where do you want to search for the file? if left empty will search in all directories " location
+   if [ -z "$location" ];
+   then
+    location="/"
+   fi
+  fi
+  read -p "What the name of the file you want to search? " filename
+  if [ -n "$filename" ];
+  then
+   filename="-iname $filename"
+  fi
+  read -p "What is the type of the file you want to search? type the relevant letter f-file, d-directory, l-link, b- block, c-character, s-socket, p-pipe: " ftype
+  if [[ -n "$ftype" ]] && [[ "$ftype" =~ ^[fdlbcsp]$ ]]; then
+   ftype="-type $ftype"
+  else
+   echo "invalid type, leaving empty"
+   ftype=""
+  fi
+  read -p "What is the size of the file you want to search? " fsize
+  if [ -n "$fsize" ]
+  then
+   fsize="-size $fsize"
+  fi
+  read -p "when was the file last moddified in days? type a number" ftime
+  if [ -n "$ftime" ]
+  then
+   ftime="-mtime $ftime"
+  fi
+  read -p "when was the file last accessed in days? type a number" fatime
+  if [ -n "$fatime" ]
+  then
+   fatime="-atime $fatime"
+  fi
+  read -p "who is the owner of the file?" fowner
+  if [ -n "$fowner" ]
+  then
+   fowner="-user $fowner"
+  fi
+  read -p "what is the owner group of the file?" fgroup
+  if [ -n "$fgroup" ]
+  then
+   fgroup="-group $fgroup"
+  fi
+  read -p "What are the permissions of the file? type a number" fperm
+  if [ -n "$fperm" ]
+  then
+   fperm="-perm $fperm"
+  fi
+  echo "find $location $filename $ftype $fsize $ftime $fatime $fowner $fgroup $fperm"
+  find $location $filename $ftype $fsize $ftime $fatime $fowner $fgroup $fperm
+  choice=0
+ elif [ "$action" == "-s" ];
+ then
+   echo "System information helper"
+   choice=0
+ elif [ "$action" == "-p" ];
+ then
+   echo "Process management helper"
+   choice=0
+ elif [ "$action" == "-u" ];
+ then
+   echo "User management helper"
+   choice=0
+ elif [ "$action" == "-h" ];
+ then
+   echo "Help system helper"
+   choice=0
+else
+choice=0
+continue
+fi
+done
