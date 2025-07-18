@@ -101,7 +101,6 @@ then
   then
    fperm="-perm $fperm"
   fi
-  echo "find $location $filename $ftype $fsize $ftime $fatime $fowner $fgroup $fperm"
   find $location $filename $ftype $fsize $ftime $fatime $fowner $fgroup $fperm
   choice=0
  elif [ "$action" == "-s" ];
